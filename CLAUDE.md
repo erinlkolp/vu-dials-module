@@ -41,8 +41,8 @@ requirements.txt         # loose runtime dep (requests>=2.0.0)
 ## Development Setup
 
 ```bash
-git clone git@github.com:erinlkolp/vu1-dial-python-module.git
-cd vu1-dial-python-module
+git clone git@github.com:erinlkolp/vu-dials-module.git
+cd vu-dials-module
 pip install -e ".[dev]"
 ```
 
