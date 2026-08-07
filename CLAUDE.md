@@ -11,8 +11,12 @@ The library communicates with a local VU1 server over plain HTTP using a key-in-
 
 **Package name (PyPI):** `vudials-client`
 **Import path:** `from vudials_client import vudialsclient`
-**Current version:** `2025.9.3` (calendar-versioned: `YYYY.M.patch`)
-**Requires:** Python ≥ 3.11, `requests ≥ 2.32.5`
+**Versioning scheme:** calendar versioning, `YYYY.M.patch`
+
+`pyproject.toml` is the single source of truth for the current version, the
+supported Python range (`requires-python`), and all runtime and `[dev]`
+dependency pins. Read them from there rather than restating them here — a
+duplicated value in this file is a value that will silently go stale.
 
 ---
 
@@ -29,7 +33,7 @@ tests/
     test_vudialsclient.py
 
 .github/workflows/
-    ci.yml               # matrix CI: Python 3.11 / 3.12 / 3.13
+    ci.yml               # matrix CI across the supported Python versions
 
 pyproject.toml           # build system, deps, pytest & coverage config
 pydoc-markdown.yml       # generates docs/api.md from docstrings
@@ -46,7 +50,7 @@ cd vu1-dial-python-module
 pip install -e ".[dev]"
 ```
 
-The `[dev]` extra installs: `pytest>=8.0`, `responses>=0.25`, `pytest-cov>=5.0`.
+The `[dev]` extra installs the test tooling; see `[project.optional-dependencies]` in `pyproject.toml` for the current list.
 
 ---
 
@@ -131,7 +135,7 @@ The project uses **calendar versioning** (`YYYY.M.patch`). To release a new vers
 
 GitHub Actions runs `.github/workflows/ci.yml` on every push to `main` or any `claude/**` branch, and on PRs targeting `main`.
 
-- Matrix: Python 3.11, 3.12, 3.13 on `ubuntu-latest`
+- Matrix: `ubuntu-latest` across the Python versions listed in `ci.yml` (`jobs.test.strategy.matrix.python-version`), which must stay consistent with `requires-python` in `pyproject.toml`
 - Command: `pytest tests/ -v --cov=vudials_client --cov-report=term-missing --cov-report=xml`
 - Coverage XML is uploaded as a build artifact (Python 3.12 run only)
 

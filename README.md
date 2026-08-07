@@ -13,7 +13,7 @@ A Python client library for Streacom's VU1 Dial development hardware. Provides a
 - **Full Admin API**: VU1 Dial Server API key management and dial provisioning
 - **Type-annotated**: All public methods carry full parameter and return-type annotations
 - **Well tested**: Comprehensive test suite using `pytest` and `responses` — no live hardware required
-- **CI tested**: Passes on Python 3.11, 3.12, and 3.13 via GitHub Actions
+- **CI tested**: Every supported Python version (3.11+) is exercised in GitHub Actions
 
 ## Installation
 
@@ -127,7 +127,7 @@ pytest tests/ -v --cov=vudials_client --cov-report=term-missing
 pytest tests/test_vudialsclient.py::TestVUDialSetDialColor -v
 ```
 
-CI runs automatically on every push and pull request via GitHub Actions across Python 3.11, 3.12, and 3.13.
+CI runs automatically on every push and pull request via GitHub Actions, across the full supported Python range (3.11+).
 
 ## Documentation
 
