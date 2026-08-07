@@ -1,7 +1,7 @@
 # vudials_client
 
 [![PyPI version](https://badge.fury.io/py/vudials_client.svg)](https://badge.fury.io/py/vudials_client)
-[![CI](https://github.com/erinlkolp/vu1-dial-python-module/actions/workflows/ci.yml/badge.svg)](https://github.com/erinlkolp/vu1-dial-python-module/actions/workflows/ci.yml)
+[![CI](https://github.com/erinlkolp/vu-dials-module/actions/workflows/ci.yml/badge.svg)](https://github.com/erinlkolp/vu-dials-module/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 
@@ -24,8 +24,8 @@ pip install vudials-client
 For development:
 
 ```bash
-git clone git@github.com:erinlkolp/vu1-dial-python-module.git
-cd vu1-dial-python-module
+git clone git@github.com:erinlkolp/vu-dials-module.git
+cd vu-dials-module
 pip install -e ".[dev]"
 ```
 
