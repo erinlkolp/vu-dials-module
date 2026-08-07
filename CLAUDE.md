@@ -37,7 +37,7 @@ tests/
 
 pyproject.toml           # build system, deps, pytest & coverage config
 pydoc-markdown.yml       # generates docs/api.md from docstrings
-requirements.txt         # loose runtime dep (requests>=2.0.0)
+requirements.txt         # legacy; mirrors the runtime dep in pyproject.toml
 ```
 
 ---
