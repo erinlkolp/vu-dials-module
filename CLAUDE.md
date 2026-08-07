@@ -11,8 +11,12 @@ The library communicates with a local VU1 server over plain HTTP using a key-in-
 
 **Package name (PyPI):** `vudials-client`
 **Import path:** `from vudials_client import vudialsclient`
-**Current version:** `2025.9.3` (calendar-versioned: `YYYY.M.patch`)
-**Requires:** Python ≥ 3.11, `requests ≥ 2.32.5`
+**Versioning scheme:** calendar versioning, `YYYY.M.patch`
+
+`pyproject.toml` is the single source of truth for the current version, the
+supported Python range (`requires-python`), and all runtime and `[dev]`
+dependency pins. Read them from there rather than restating them here — a
+duplicated value in this file is a value that will silently go stale.
 
 ---
 
@@ -29,11 +33,11 @@ tests/
     test_vudialsclient.py
 
 .github/workflows/
-    ci.yml               # matrix CI: Python 3.11 / 3.12 / 3.13
+    ci.yml               # matrix CI across the supported Python versions
+    publish.yml          # builds and publishes to PyPI on GitHub release
 
 pyproject.toml           # build system, deps, pytest & coverage config
 pydoc-markdown.yml       # generates docs/api.md from docstrings
-requirements.txt         # loose runtime dep (requests>=2.0.0)
 ```
 
 ---
@@ -46,7 +50,7 @@ cd vu-dials-module
 pip install -e ".[dev]"
 ```
 
-The `[dev]` extra installs: `pytest>=8.0`, `responses>=0.25`, `pytest-cov>=5.0`.
+The `[dev]` extra installs the test tooling; see `[project.optional-dependencies]` in `pyproject.toml` for the current list.
 
 ---
 
@@ -123,7 +127,9 @@ The project uses **calendar versioning** (`YYYY.M.patch`). To release a new vers
 
 1. Update `version` in `pyproject.toml`.
 2. Ensure the changelog / README reflects the change.
-3. Tag the commit and push; PyPI publishing is done manually via `hatch build && hatch publish` or the equivalent `twine upload`.
+3. Tag the commit, push, and publish a GitHub release for that tag.
+
+Publishing is **automated** — `publish.yml` fires on `release: published`, builds the sdist and wheel, and uploads them to PyPI. Do not run `hatch publish` or `twine upload` by hand; the workflow will fail on the duplicate upload.
 
 ---
 
@@ -131,9 +137,14 @@ The project uses **calendar versioning** (`YYYY.M.patch`). To release a new vers
 
 GitHub Actions runs `.github/workflows/ci.yml` on every push to `main` or any `claude/**` branch, and on PRs targeting `main`.
 
-- Matrix: Python 3.11, 3.12, 3.13 on `ubuntu-latest`
+- Matrix: `ubuntu-latest` across the Python versions listed in `ci.yml` (`jobs.test.strategy.matrix.python-version`), which must stay consistent with `requires-python` in `pyproject.toml`
 - Command: `pytest tests/ -v --cov=vudials_client --cov-report=term-missing --cov-report=xml`
 - Coverage XML is uploaded as a build artifact (Python 3.12 run only)
+
+`.github/workflows/publish.yml` runs on `release: published`. A `build` job produces the sdist and wheel; a `publish` job downloads them and uploads to PyPI.
+
+- Authentication is **PyPI trusted publishing** (OIDC), not an API token — the workflow holds no secrets, and `permissions: id-token: write` is what makes it work.
+- The trusted publisher on PyPI matches on the exact `owner/repo`, workflow filename, and environment name (`pypi`) from the OIDC claim. Renaming the repo, renaming `publish.yml`, or changing the job's `environment:` will break publishing with `invalid-publisher` until the publisher is re-registered on PyPI.
 
 ---
 
